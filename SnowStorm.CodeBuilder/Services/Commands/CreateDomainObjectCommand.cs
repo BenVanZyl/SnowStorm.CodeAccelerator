@@ -1,12 +1,10 @@
 ﻿using MediatR;
 using SnowStorm.CodeBuilder.Infrastructure;
-using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SnowStorm.CodeBuilder.Services.Commands
+namespace SnowStorm.CodeAccelerator.Services.Commands
 {
     public class CreateDomainObjectCommand : IRequest<string>
     {
@@ -41,15 +39,14 @@ namespace SnowStorm.CodeBuilder.Services.Commands
 
             value.AppendLine("using Microsoft.EntityFrameworkCore;");
             value.AppendLine("using Microsoft.EntityFrameworkCore.Metadata.Builders;");
-            value.AppendLine("using SnowBird.Web.Client.Dto.Shopify;");
-            value.AppendLine("using SnowStorm.Infrastructure.Domain;");
-            value.AppendLine("using SnowStorm.Infrastructure.QueryExecutors;");
+            value.AppendLine("using SnowStorm.Domain;");
+            value.AppendLine("using SnowStorm.QueryExecutors;");
             value.AppendLine("using System;");
             value.AppendLine("using System.Threading.Tasks;");
             value.AppendLine("");
             value.AppendLine($"namespace {_helper.NameSpaceDomain}");
             value.AppendLine("{");
-            value.AppendLine($"    public partial class {_helper.TableDomainName} : IDomainEntity");
+            value.AppendLine($"    public class {_helper.TableDomainName} : DomainEntityWithAudit");
             value.AppendLine("    {");
             value.AppendLine($"        protected {_helper.TableDomainName}() {_helper.BracketsOnly}");
 
@@ -90,20 +87,14 @@ namespace SnowStorm.CodeBuilder.Services.Commands
 
             value.AppendLine();
             value.AppendLine(AllColumns());
-            value.AppendLine();
 
             // TODO: Setup relationship objects
-            value.AppendLine();
             value.AppendLine(ForeignKeys());
             value.AppendLine();
 
-            value.AppendLine();
             value.AppendLine(Methods());
             value.AppendLine();
 
-            value.AppendLine("    }");
-
-            value.AppendLine();
             value.AppendLine(EntityConfig());
             value.AppendLine();
 
@@ -154,13 +145,15 @@ namespace SnowStorm.CodeBuilder.Services.Commands
             v.AppendLine($"        internal static async Task<{_helper.TableDomainName}> Create(IQueryExecutor executor, {_helper.TableDomainName}Dto data, bool autoSave = true)");
             v.AppendLine("        {");
             v.AppendLine($"            if (data == null)");
-            v.AppendLine($"                throw new Exceptioin(\"Create Failed due to missing data!: {_helper.TableDomainName}\")");
+            v.AppendLine($"                throw new ThisAppExecption(\"Create Failed due to missing data!: {_helper.TableDomainName}\");");
             v.AppendLine();
             v.AppendLine($"            var v = new {_helper.TableDomainName}(data);");
-            v.AppendLine($"            await executor.Add<Member>(value);");
+            v.AppendLine($"            await executor.Add<{_helper.TableDomainName}>(v);");
             v.AppendLine();
             v.AppendLine($"            if (autoSave)");
             v.AppendLine($"                await executor.Save();");
+            v.AppendLine();
+            v.AppendLine($"            return v;");
             v.AppendLine("        }");
             v.AppendLine();
             v.AppendLine($"        private {_helper.TableDomainName}({_helper.TableDomainName}Dto data)");
@@ -176,7 +169,7 @@ namespace SnowStorm.CodeBuilder.Services.Commands
                     continue;
                 if (_helper.PrimaryKeys != null && _helper.PrimaryKeys.Contains(col.COLUMN_NAME))
                     continue;
-                v.AppendLine($"       SetSet{col.ApiColumnName}(data.{col.ApiColumnName});");
+                v.AppendLine($"       Set{col.ApiColumnName}(data.{col.ApiColumnName});");
             }
             v.AppendLine();
             v.AppendLine("        }");
@@ -238,7 +231,7 @@ namespace SnowStorm.CodeBuilder.Services.Commands
             v.AppendLine("        }");
             v.AppendLine("    }");
             v.AppendLine($"    #endregion //config");
-
+            v.AppendLine("    }");
 
             return v.ToString();
         }

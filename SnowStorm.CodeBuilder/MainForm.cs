@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using MediatR;
 using SnowStorm.CodeBuilder.Dto;
 using SnowStorm.CodeBuilder.Infrastructure;
-using SnowStorm.CodeBuilder.Services.Commands;
+using SnowStorm.CodeAccelerator.Services.Commands;
 using SnowStorm.CodeBuilder.Services.Queries.DbInfo;
 
 namespace SnowStorm.CodeBuilder
@@ -87,23 +87,62 @@ namespace SnowStorm.CodeBuilder
 
         private async Task GenerateTheCode()
         {
-            GeneratedCode = new Dictionary<string, string>();
+            InitDictionary();
 
             var helper = new CodeGeneratorHelper()
             {
                 Schema = TableInfo.Table.TABLE_SCHEMA,
                 TableName = TableInfo.Table.TABLE_NAME,
+                TableDomainName = TableInfo.Table.TABLE_NAME,
                 Columns = TableInfo.Columns,
                 PrimaryKeys = TableInfo.PrimaryKeys,
                 ForeignKeys = TableInfo.ForeignKeys
 
             };
 
-            var r = await _mediator.Send(new CreateDomainObjectCommand(helper));
+            string r;
 
+            r = await _mediator.Send(new CreateDtoObjectCommand(helper));
+            GeneratedCode["DomainDto"] = r;
+
+            r = await _mediator.Send(new CreateDomainObjectCommand(helper));
             GeneratedCode["DomainObject"] = r;
 
-            GeneratedCodeText.Text = r;
+            r = await _mediator.Send(new CreateQueryCommand(helper));
+            GeneratedCode["QueryClass"] = r;
+
+            r = await _mediator.Send(new CreateSaveCmdObjectCommand(helper));
+            GeneratedCode["SaveCommand"] = r;
+        }
+
+        private void LoadCodeOptions()
+        {
+            CodeOptions.Items.Add("---");
+            CodeOptions.Items.Add("DomainDto");
+            CodeOptions.Items.Add("DomainObject");
+            CodeOptions.Items.Add("QueryClass");
+            CodeOptions.Items.Add("SaveCommand");
+
+            InitDictionary();
+        }
+
+        private void InitDictionary()
+        {
+            GeneratedCode = new Dictionary<string, string>();
+            foreach (var item in CodeOptions.Items)
+            {
+                GeneratedCode[item.ToString()] = "No code generated for this option.";
+            }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            LoadCodeOptions();
+        }
+
+        private void CodeOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GeneratedCodeText.Text = GeneratedCode[CodeOptions.SelectedItem.ToString()];
         }
     }
 

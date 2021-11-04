@@ -37,6 +37,7 @@ namespace SnowStorm.CodeBuilder
             this.ListOfForeignKeys = new System.Windows.Forms.ListBox();
             this.GeneratedCodeText = new System.Windows.Forms.TextBox();
             this.GenerateCodeButton = new System.Windows.Forms.Button();
+            this.CodeOptions = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.ListOfColumns)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +47,7 @@ namespace SnowStorm.CodeBuilder
             this.ConnectionStringText.Name = "ConnectionStringText";
             this.ConnectionStringText.Size = new System.Drawing.Size(788, 23);
             this.ConnectionStringText.TabIndex = 0;
-            this.ConnectionStringText.Text = "Server=(localdb)\\mssqllocaldb;Database=RelianceData;Trusted_Connection=True;Multi" +
+            this.ConnectionStringText.Text = "Server=(localdb)\\mssqllocaldb;Database=SnowBirdData;Trusted_Connection=True;Multi" +
     "pleActiveResultSets=true";
             // 
             // button1
@@ -61,6 +62,8 @@ namespace SnowStorm.CodeBuilder
             // 
             // ListOfTables
             // 
+            this.ListOfTables.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.ListOfTables.FormattingEnabled = true;
             this.ListOfTables.ItemHeight = 15;
             this.ListOfTables.Location = new System.Drawing.Point(0, 97);
@@ -71,6 +74,8 @@ namespace SnowStorm.CodeBuilder
             // 
             // ListOfColumns
             // 
+            this.ListOfColumns.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.ListOfColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ListOfColumns.Location = new System.Drawing.Point(294, 97);
             this.ListOfColumns.Name = "ListOfColumns";
@@ -82,7 +87,7 @@ namespace SnowStorm.CodeBuilder
             // 
             this.ListOfPrimaryKeys.FormattingEnabled = true;
             this.ListOfPrimaryKeys.ItemHeight = 15;
-            this.ListOfPrimaryKeys.Location = new System.Drawing.Point(763, 116);
+            this.ListOfPrimaryKeys.Location = new System.Drawing.Point(763, 97);
             this.ListOfPrimaryKeys.Name = "ListOfPrimaryKeys";
             this.ListOfPrimaryKeys.Size = new System.Drawing.Size(176, 139);
             this.ListOfPrimaryKeys.TabIndex = 4;
@@ -91,18 +96,21 @@ namespace SnowStorm.CodeBuilder
             // 
             this.ListOfForeignKeys.FormattingEnabled = true;
             this.ListOfForeignKeys.ItemHeight = 15;
-            this.ListOfForeignKeys.Location = new System.Drawing.Point(763, 261);
+            this.ListOfForeignKeys.Location = new System.Drawing.Point(763, 242);
             this.ListOfForeignKeys.Name = "ListOfForeignKeys";
             this.ListOfForeignKeys.Size = new System.Drawing.Size(176, 139);
             this.ListOfForeignKeys.TabIndex = 5;
             // 
             // GeneratedCodeText
             // 
+            this.GeneratedCodeText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GeneratedCodeText.Location = new System.Drawing.Point(945, 12);
             this.GeneratedCodeText.Multiline = true;
             this.GeneratedCodeText.Name = "GeneratedCodeText";
             this.GeneratedCodeText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.GeneratedCodeText.Size = new System.Drawing.Size(455, 449);
+            this.GeneratedCodeText.Size = new System.Drawing.Size(445, 443);
             this.GeneratedCodeText.TabIndex = 6;
             // 
             // GenerateCodeButton
@@ -115,11 +123,21 @@ namespace SnowStorm.CodeBuilder
             this.GenerateCodeButton.UseVisualStyleBackColor = true;
             this.GenerateCodeButton.Click += new System.EventHandler(this.GenerateCodeButton_Click);
             // 
+            // CodeOptions
+            // 
+            this.CodeOptions.FormattingEnabled = true;
+            this.CodeOptions.Location = new System.Drawing.Point(551, 41);
+            this.CodeOptions.Name = "CodeOptions";
+            this.CodeOptions.Size = new System.Drawing.Size(237, 23);
+            this.CodeOptions.TabIndex = 8;
+            this.CodeOptions.SelectedIndexChanged += new System.EventHandler(this.CodeOptions_SelectedIndexChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1412, 473);
+            this.ClientSize = new System.Drawing.Size(1402, 467);
+            this.Controls.Add(this.CodeOptions);
             this.Controls.Add(this.GenerateCodeButton);
             this.Controls.Add(this.GeneratedCodeText);
             this.Controls.Add(this.ListOfForeignKeys);
@@ -130,6 +148,7 @@ namespace SnowStorm.CodeBuilder
             this.Controls.Add(this.ConnectionStringText);
             this.Name = "MainForm";
             this.Text = "SnowStorm - Code Builder";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ListOfColumns)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -146,6 +165,7 @@ namespace SnowStorm.CodeBuilder
         private System.Windows.Forms.ListBox ListOfForeignKeys;
         private System.Windows.Forms.TextBox GeneratedCodeText;
         private System.Windows.Forms.Button GenerateCodeButton;
+        private System.Windows.Forms.ComboBox CodeOptions;
     }
 }
 
