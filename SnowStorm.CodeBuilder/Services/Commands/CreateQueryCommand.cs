@@ -43,7 +43,7 @@ namespace SnowStorm.CodeAccelerator.Services.Commands
             value.AppendLine($"          _id = id;");
             value.AppendLine("      }");
             value.AppendLine("");
-            value.AppendLine($"      public IQueryable<{_helper.TableDomainName}> Execute(IQueryableProvider queryableProvider)");
+            value.AppendLine($"      public IQueryable<{_helper.TableDomainName}> Get(IQueryableProvider queryableProvider)");
             value.AppendLine("      {");
             value.AppendLine($"          return queryableProvider.Query<{_helper.TableDomainName}>()");
             value.AppendLine($"             .Where(w => w.Id == _id);");
@@ -59,9 +59,8 @@ namespace SnowStorm.CodeAccelerator.Services.Commands
             value.AppendLine("{");
             value.AppendLine($"    public class Get{_helper.TableDomainName}sQuery : IQueryResultList<{_helper.TableDomainName}>");
             value.AppendLine("    {");
-            value.AppendLine("      private readonly long _id;");
             value.AppendLine("");
-            value.AppendLine($"      public IQueryable<{_helper.TableDomainName}> Execute(IQueryableProvider queryableProvider)");
+            value.AppendLine($"      public IQueryable<{_helper.TableDomainName}> Get(IQueryableProvider queryableProvider)");
             value.AppendLine("      {");
             value.AppendLine($"          return queryableProvider.Query<{_helper.TableDomainName}>()");
             value.AppendLine($"             .OrderBy(o => o.)");

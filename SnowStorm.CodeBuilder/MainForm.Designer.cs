@@ -47,8 +47,8 @@ namespace SnowStorm.CodeBuilder
             this.ConnectionStringText.Name = "ConnectionStringText";
             this.ConnectionStringText.Size = new System.Drawing.Size(788, 23);
             this.ConnectionStringText.TabIndex = 0;
-            this.ConnectionStringText.Text = "Server=(localdb)\\mssqllocaldb;Database=SnowBirdData;Trusted_Connection=True;Multi" +
-    "pleActiveResultSets=true";
+            this.ConnectionStringText.Text = "Server=(localdb)\\mssqllocaldb;Database=Northwind;Trusted_Connection=True;Multiple" +
+    "ActiveResultSets=true";
             // 
             // button1
             // 
